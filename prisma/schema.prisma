@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+  // The image is alpine on arm64. Native covers local dev on the Mac.
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Field names stay snake_case so the JSON matches what the Base44 UI already expects.
+
+// No role column. Admins come from ADMIN_PLAYERS so access lives in k8s config.
+model User {
+  id            String    @id @default(uuid())
+  // Stored lowercase so logins are case insensitive.
+  username      String    @unique
+  password_hash String
+  // The roster name this account plays as. One account per golfer.
+  player_name   String    @unique
+  // Optional. Only used for pairing and availability emails.
+  email         String?
+  created_date  DateTime  @default(now())
+  updated_date  DateTime  @updatedAt
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Session {
+  // sha256 of the cookie token, so a database leak does not hand out live sessions.
+  id           String   @id
+  user_id      String
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  expires_at   DateTime
+  created_date DateTime @default(now())
+
+  @@index([user_id])
+  @@map("sessions")
+}
+
+model Availability {
+  id           String   @id @default(uuid())
+  date         String
+  start_time   String?
+  end_time     String?
+  player_name  String
+  player_email String
+  notes        String?
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
+
+  @@index([date])
+  @@index([player_email])
+  @@map("availability")
+}
+
+model TeeTime {
+  id           String   @id @default(uuid())
+  date         String
+  start_time   String?
+  end_time     String?
+  course       String?
+  pairing      String?
+  commissioner String?
+  notes        String?
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
+
+  @@index([date])
+  @@map("tee_times")
+}
+
+model Foursome {
+  id           String   @id @default(uuid())
+  date         String
+  group_number Int
+  players      String[]
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
+
+  @@index([date])
+  @@map("foursomes")
+}
+
+model PlayerInterest {
+  id           String   @id @default(uuid())
+  date         String
+  player_name  String
+  player_email String
+  notes        String?
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
+
+  @@index([date])
+  @@map("player_interest")
+}
+
+model AppSettings {
+  id            String   @id @default(uuid())
+  setting_key   String   @unique
+  setting_value String
+  description   String?
+  created_date  DateTime @default(now())
+  updated_date  DateTime @updatedAt
+
+  @@map("app_settings")
+}

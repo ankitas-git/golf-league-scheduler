@@ -1,0 +1,55 @@
+{
+  "name": "golf-scheduler",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "@radix-ui/react-alert-dialog": "1.1.23",
+    "@radix-ui/react-dialog": "1.1.23",
+    "@radix-ui/react-label": "2.1.15",
+    "@radix-ui/react-popover": "1.1.23",
+    "@radix-ui/react-select": "2.3.7",
+    "@radix-ui/react-slot": "1.3.3",
+    "@radix-ui/react-tabs": "1.1.21",
+    "@tanstack/react-query": "5.104.1",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "date-fns": "3.6.0",
+    "framer-motion": "11.18.2",
+    "google-auth-library": "11.1.0",
+    "lucide-react": "0.475.0",
+    "next": "16.3.8",
+    "next-themes": "0.4.6",
+    "nodemailer": "10.0.13",
+    "prisma": "6.19.3",
+    "react": "19.3.0",
+    "react-day-picker": "8.10.2",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "sonner": "2.0.8",
+    "tailwind-merge": "3.7.0",
+    "tailwindcss-animate": "1.0.7",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.6.1",
+    "postcss": "8.5.28",
+    "tailwindcss": "3.4.19"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ]
+  }
+}

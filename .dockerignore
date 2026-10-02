@@ -1,0 +1,12 @@
+# Secrets never reach the registry. Runtime config comes from the Kubernetes secret.
+.env
+.env.*
+node_modules
+.next
+.pnpm-store
+.devbox
+.direnv
+.envrc
+.git
+.gitignore
+README.md

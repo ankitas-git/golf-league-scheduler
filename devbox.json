@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.17.5/.schema/devbox.schema.json",
+  "packages": [
+    "nodejs@22",
+    "pnpm@10",
+    "postgresql@18"
+  ],
+  "env": {
+    "DATABASE_URL": "postgresql://golf@localhost:5433/golf_scheduler",
+    "PGDATA": "$PWD/.devbox/pgdata",
+    "PGHOST": "localhost",
+    "PGPORT": "5433",
+    "PGUSER": "golf",
+    "PGDATABASE": "golf_scheduler",
+    "ADMIN_PLAYERS": "Sajay Rai",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "shell": {
+    "init_hook": [
+      "export PATH=$PWD/node_modules/.bin:$PATH"
+    ],
+    "scripts": {
+      "setup": [
+        "pnpm install --frozen-lockfile",
+        "devbox run db:start",
+        "devbox run db:create",
+        "sh scripts/migrate.sh"
+      ],
+      "db:start": [
+        "[ -f $PGDATA/PG_VERSION ] || initdb --username=golf --auth=trust --encoding=UTF8",
+        "pg_ctl status >/dev/null 2>&1 || pg_ctl start -o '-p 5433 -k /tmp' -l $PGDATA/postgres.log -w"
+      ],
+      "db:stop": [
+        "pg_ctl stop -w || true"
+      ],
+      "db:create": [
+        "createdb golf_scheduler 2>/dev/null || true"
+      ],
+      "db:reset": [
+        "dropdb --if-exists golf_scheduler",
+        "devbox run db:create",
+        "sh scripts/migrate.sh"
+      ],
+      "dev": [
+        "next dev"
+      ]
+    }
+  }
+}
