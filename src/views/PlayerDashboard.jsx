@@ -111,7 +111,7 @@ export default function PlayerDashboard({ user }) {
     await queryClient.invalidateQueries({ queryKey: ['tee-times'] });
   };
 
-  const ptr = usePullToRefresh(handleRefresh);
+  const [ptrRef, ptr] = usePullToRefresh(handleRefresh);
 
   const handleTimeConfirm = (data) => {
     createMutation.mutate(data);
@@ -211,7 +211,7 @@ export default function PlayerDashboard({ user }) {
   return (
     <PageTransition>
     <div
-      ref={ptr.scrollRef}
+      ref={ptrRef}
       onTouchStart={ptr.onTouchStart}
       onTouchMove={ptr.onTouchMove}
       onTouchEnd={ptr.onTouchEnd}
@@ -249,7 +249,7 @@ export default function PlayerDashboard({ user }) {
               closedDates={closedDates}
             />
             <p className="text-xs text-gray-500 text-center mt-3">
-              Click dates to toggle your availability
+              Tap dates to toggle your availability
             </p>
 
             <TimeSelectionDialog

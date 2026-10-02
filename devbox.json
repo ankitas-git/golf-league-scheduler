@@ -37,7 +37,7 @@
         "createdb golf_scheduler 2>/dev/null || true"
       ],
       "db:reset": [
-        "dropdb --if-exists golf_scheduler",
+        "dropdb --if-exists --force golf_scheduler",
         "devbox run db:create",
         "sh scripts/migrate.sh"
       ],

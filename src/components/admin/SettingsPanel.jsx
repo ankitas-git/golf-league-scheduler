@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Settings, Loader2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
@@ -17,11 +17,13 @@ const toForm = (values) =>
 export default function SettingsPanel() {
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({ queryKey: ['settings'], queryFn: api.settings.get });
-  const [form, setForm] = useState(() => toForm());
-
-  useEffect(() => {
-    if (data) setForm(toForm(data));
-  }, [data]);
+  // Keyed on the saved values, so the form resets to them after a load or save.
+  const [form, setForm] = useState(() => toForm(data));
+  const [seen, setSeen] = useState(data);
+  if (data !== seen) {
+    setSeen(data);
+    setForm(toForm(data));
+  }
 
   const save = useMutation({
     mutationFn: (changes) => api.settings.save(changes),
@@ -80,7 +82,7 @@ export default function SettingsPanel() {
                         id={id}
                         value={value}
                         onChange={(e) => onChange(e.target.value)}
-                        className="h-9 w-full text-sm border border-slate-200 rounded-md px-2 bg-white"
+                        className="h-9 w-full text-base sm:text-sm border border-slate-200 rounded-md px-2 bg-white"
                       >
                         {def.options.map((o) => <option key={o}>{o}</option>)}
                       </select>

@@ -46,7 +46,7 @@ export default function ManagerDashboard({ user }) {
     });
     
     return unsubscribe;
-  }, [user]);
+  }, [user, queryClient]);
 
   const { data: teeTimes = [] } = useQuery({
     queryKey: ['tee-times'],
@@ -69,7 +69,7 @@ export default function ManagerDashboard({ user }) {
     await queryClient.invalidateQueries({ queryKey: ['handicap-map'] });
   };
 
-  const ptr = usePullToRefresh(handleRefresh);
+  const [ptrRef, ptr] = usePullToRefresh(handleRefresh);
 
   const deleteTeeTimeMutation = useMutation({
     mutationFn: (id) => api.entities.TeeTime.delete(id),
@@ -184,7 +184,7 @@ export default function ManagerDashboard({ user }) {
   return (
     <PageTransition>
     <div
-      ref={ptr.scrollRef}
+      ref={ptrRef}
       onTouchStart={ptr.onTouchStart}
       onTouchMove={ptr.onTouchMove}
       onTouchEnd={ptr.onTouchEnd}
@@ -192,7 +192,7 @@ export default function ManagerDashboard({ user }) {
       style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}
     >
       {/* Header */}
-      <header className="bg-white border-b border-slate-100 sticky top-0 z-10">
+      <header className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -211,47 +211,47 @@ export default function ManagerDashboard({ user }) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         <PullToRefreshIndicator pullDistance={ptr.pullDistance} refreshing={ptr.refreshing} threshold={ptr.THRESHOLD} />
         {/* Stats */}
-        <div className="grid sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8">
           <Card className="border-0 shadow-lg shadow-slate-200/50">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-emerald-100 flex items-center justify-center">
                   <Users className="h-6 w-6 text-emerald-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Available Players</p>
-                  <p className="text-2xl font-bold text-slate-900">{uniquePlayers}</p>
+                  <p className="text-xs sm:text-sm text-slate-500 leading-tight">Available Players</p>
+                  <p className="text-xl sm:text-2xl font-bold text-slate-900">{uniquePlayers}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg shadow-slate-200/50">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-blue-100 flex items-center justify-center">
                   <CalendarDays className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Dates with Availability</p>
-                  <p className="text-2xl font-bold text-slate-900">{uniqueDates}</p>
+                  <p className="text-xs sm:text-sm text-slate-500 leading-tight">Dates with Availability</p>
+                  <p className="text-xl sm:text-2xl font-bold text-slate-900">{uniqueDates}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="border-0 shadow-lg shadow-slate-200/50">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-purple-100 flex items-center justify-center">
                   <Clock className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Total Entries</p>
-                  <p className="text-2xl font-bold text-slate-900">{filteredAvailabilities.length}</p>
+                  <p className="text-xs sm:text-sm text-slate-500 leading-tight">Total Entries</p>
+                  <p className="text-xl sm:text-2xl font-bold text-slate-900">{filteredAvailabilities.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -311,12 +311,12 @@ export default function ManagerDashboard({ user }) {
 
         {/* View Toggle */}
         <Tabs defaultValue="calendar" className="w-full">
-          <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-2 sm:grid-cols-5 h-auto">
-            <TabsTrigger value="calendar">Calendar View</TabsTrigger>
-            <TabsTrigger value="table">Edit Player Availability</TabsTrigger>
-            <TabsTrigger value="teetimes">Tee Times</TabsTrigger>
-            <TabsTrigger value="accounts">Accounts</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsList data-allow-scroll className="flex w-full max-w-3xl mx-auto h-auto justify-start sm:justify-center overflow-x-auto [scrollbar-width:none]">
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="calendar">Calendar View</TabsTrigger>
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="table">Edit Player Availability</TabsTrigger>
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="teetimes">Tee Times</TabsTrigger>
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="accounts">Accounts</TabsTrigger>
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="settings">Settings</TabsTrigger>
           </TabsList>
           
           <TabsContent value="calendar" className="mt-6">
@@ -328,7 +328,7 @@ export default function ManagerDashboard({ user }) {
           </TabsContent>
           
           <TabsContent value="table" className="mt-6">
-            <p className="text-sm text-slate-500 mb-4">Click any cell to toggle a player's availability for a tee time date.</p>
+            <p className="text-sm text-slate-500 mb-4">Tap any cell to toggle a player&apos;s availability for a tee time date.</p>
             <AdminAvailabilityEditor
               teeTimes={teeTimes}
               availabilities={availabilities}

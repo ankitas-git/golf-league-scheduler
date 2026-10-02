@@ -26,7 +26,8 @@ export default function DeleteAccountDialog({ children }) {
     setError('');
     try {
       await api.auth.deleteAccount();
-      window.location.href = '/';
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- full reload drops cached data from the signed out user
+      window.location.assign('/');
     } catch (err) {
       setError(err.message || 'Failed to delete account');
       setLoading(false);

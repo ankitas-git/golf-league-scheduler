@@ -89,13 +89,13 @@ export default function AccountsPanel() {
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-xs text-slate-400 mr-2">Joined {format(parseISO(a.created_date), 'M/d/yy')}</span>
-                    <Button size="sm" variant="ghost" className="h-8" onClick={() => setResetting(a.id)} title="Reset password">
+                    <Button size="sm" variant="ghost" className="h-10 w-10 sm:h-8 sm:w-auto" onClick={() => setResetting(a.id)} title="Reset password">
                       <KeyRound className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-8 text-slate-400 hover:text-red-600"
+                      className="h-10 w-10 sm:h-8 sm:w-auto text-slate-400 hover:text-red-600"
                       title="Remove account"
                       disabled={remove.isPending}
                       onClick={() => {

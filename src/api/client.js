@@ -65,10 +65,12 @@ export const api = {
     deleteAccount: () => request('DELETE', '/api/auth/me'),
     logout: async () => {
       await request('POST', '/api/auth/logout').catch(() => {});
-      window.location.href = '/';
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- full reload drops cached data from the signed out user
+      window.location.assign('/');
     },
     redirectToLogin: () => {
-      window.location.href = '/';
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- full reload drops cached data from the signed out user
+      window.location.assign('/');
     },
   },
   settings: {

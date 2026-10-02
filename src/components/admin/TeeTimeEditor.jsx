@@ -45,7 +45,7 @@ function TeeTimeRow({ teeTime, onSave, onDelete }) {
           <select
             value={form.course}
             onChange={e => setForm(f => ({ ...f, course: e.target.value }))}
-            className="h-8 text-sm border border-slate-200 rounded-md px-2"
+            className="h-8 text-base sm:text-sm border border-slate-200 rounded-md px-2 bg-white"
           >
             {COURSES.map(c => <option key={c}>{c}</option>)}
           </select>
@@ -53,7 +53,7 @@ function TeeTimeRow({ teeTime, onSave, onDelete }) {
           <select
             value={form.commissioner}
             onChange={e => setForm(f => ({ ...f, commissioner: e.target.value }))}
-            className="h-8 text-sm border border-slate-200 rounded-md px-2"
+            className="h-8 text-base sm:text-sm border border-slate-200 rounded-md px-2 bg-white"
           >
             <option value="">— Commissioner —</option>
             {COMMISSIONERS.map(c => <option key={c}>{c}</option>)}
@@ -110,10 +110,10 @@ function AddTeeTimeForm({ onAdd, onCancel }) {
     <div className="flex flex-wrap items-center gap-2 py-3 border-t border-emerald-100 bg-emerald-50/50 px-2 rounded-lg mt-2">
       <Input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} className="w-36 h-8 text-sm" />
       <Input type="time" value={form.start_time} onChange={e => setForm(f => ({ ...f, start_time: e.target.value }))} className="w-32 h-8 text-sm" />
-      <select value={form.course} onChange={e => setForm(f => ({ ...f, course: e.target.value }))} className="h-8 text-sm border border-slate-200 rounded-md px-2">
+      <select value={form.course} onChange={e => setForm(f => ({ ...f, course: e.target.value }))} className="h-8 text-base sm:text-sm border border-slate-200 rounded-md px-2 bg-white">
         {COURSES.map(c => <option key={c}>{c}</option>)}
       </select>
-      <select value={form.commissioner} onChange={e => setForm(f => ({ ...f, commissioner: e.target.value }))} className="h-8 text-sm border border-slate-200 rounded-md px-2">
+      <select value={form.commissioner} onChange={e => setForm(f => ({ ...f, commissioner: e.target.value }))} className="h-8 text-base sm:text-sm border border-slate-200 rounded-md px-2 bg-white">
         <option value="">— Commissioner —</option>
         {COMMISSIONERS.map(c => <option key={c}>{c}</option>)}
       </select>

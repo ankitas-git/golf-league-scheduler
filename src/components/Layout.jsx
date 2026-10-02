@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createPageUrl } from '@/utils';
 import { api } from '@/api/client';
@@ -61,11 +62,7 @@ export default function Layout({ children, currentPageName, user }) {
               href={createPageUrl('PlayerDashboard')}
               className="flex items-center gap-2"
             >
-              <img 
-                src="/oh-shield.png" 
-                alt="OH Shield Logo" 
-                className="w-9 h-9 object-contain"
-              />
+              <Image src="/oh-shield.png" alt="Oakland Hills shield" width={36} height={36} priority className="w-9 h-9 object-contain" />
               <span className="font-bold text-gray-900 hidden sm:block">{league_name} Scheduler</span>
             </Link>
 
@@ -150,6 +147,7 @@ export default function Layout({ children, currentPageName, user }) {
       </nav>
 
       {/* Mobile Bottom Navigation */}
+      {isAdmin && (
       <div 
         className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
@@ -180,9 +178,10 @@ export default function Layout({ children, currentPageName, user }) {
           ))}
         </div>
       </div>
+      )}
 
       {/* Page Content */}
-      <main className="pb-20 md:pb-0">
+      <main className={isAdmin ? "pb-20 md:pb-0" : undefined}>
         {children}
       </main>
     </div>

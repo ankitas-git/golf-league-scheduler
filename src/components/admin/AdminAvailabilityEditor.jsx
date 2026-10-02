@@ -114,14 +114,13 @@ export default function AdminAvailabilityEditor({ teeTimes, availabilities }) {
     <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs">
       <div className="flex items-center gap-2 px-5 py-3 bg-amber-50 border-b border-amber-100">
         <UserCog className="w-4 h-4 text-amber-600" />
-        <span className="text-sm font-medium text-amber-800">Edit Mode — Click any cell to toggle a player's availability</span>
+        <span className="text-sm font-medium text-amber-800">Tap any cell to toggle a player&apos;s availability. Swipe sideways for more dates.</span>
       </div>
-      <div className="overflow-x-auto overflow-y-auto" style={{ maxHeight: 'calc(100vh - 320px)' }}>
+      <div data-allow-scroll className="overflow-x-auto overflow-y-auto overscroll-x-contain" style={{ maxHeight: 'calc(100vh - 320px)' }}>
         <table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%' }}>
           <thead>
             <tr>
-              <th style={{ position: 'sticky', top: 0, left: 0, zIndex: 40, minWidth: 110, background: '#047857' }} className="text-white font-semibold px-4 py-3 text-left">First Name</th>
-              <th style={{ position: 'sticky', top: 0, left: 110, zIndex: 40, minWidth: 110, background: '#047857' }} className="text-white font-semibold px-4 py-3 text-left">Last Name</th>
+              <th style={{ position: 'sticky', top: 0, left: 0, zIndex: 40, background: '#047857' }} className="text-white font-semibold px-3 py-3 text-left min-w-[7.5rem] sm:min-w-[12rem]">Player</th>
               {dates.map(date => (
                 <th key={date} style={{ position: 'sticky', top: 0, zIndex: 20, background: '#047857' }} className="text-white font-semibold text-center whitespace-nowrap px-3 py-3">
                   {format(parseISO(date), 'M/d')}
@@ -137,8 +136,10 @@ export default function AdminAvailabilityEditor({ teeTimes, availabilities }) {
               const rowBg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
               return (
                 <tr key={name} className="hover:bg-emerald-50/30 transition-colors">
-                  <td style={{ position: 'sticky', left: 0, zIndex: 10, minWidth: 110, background: rowBg }} className="font-medium text-slate-700 px-4 py-2">{firstName}</td>
-                  <td style={{ position: 'sticky', left: 110, zIndex: 10, minWidth: 110, background: rowBg }} className="font-medium text-slate-700 px-4 py-2">{lastName}</td>
+                  <td style={{ position: 'sticky', left: 0, zIndex: 10, background: rowBg }} className="text-slate-700 px-3 py-2 min-w-[7.5rem] sm:min-w-[12rem] leading-tight">
+                    <span className="font-medium">{lastName}</span>
+                    <span className="text-slate-500">, {firstName}</span>
+                  </td>
                   {dates.map(date => {
                     const cellKey = `${name}|${date}`;
                     const isAvailable = !!getAvailability(name, date);
@@ -149,7 +150,7 @@ export default function AdminAvailabilityEditor({ teeTimes, availabilities }) {
                           onClick={() => handleCellClick(name, date)}
                           disabled={isPending}
                           className={cn(
-                            "inline-flex items-center justify-center w-9 h-9 rounded-full transition-all cursor-pointer",
+                            "inline-flex items-center justify-center w-10 h-10 sm:w-9 sm:h-9 rounded-full transition-all cursor-pointer",
                             isAvailable
                               ? "bg-emerald-100 hover:bg-red-100 group"
                               : "bg-red-50 hover:bg-emerald-100 group",

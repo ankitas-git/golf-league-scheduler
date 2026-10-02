@@ -266,7 +266,7 @@ export default function AvailabilityCalendar({ selectedDates = [], onDateToggle,
         </div>
         <div className="flex items-center gap-1.5 text-xs text-gray-500">
           <div className="w-3.5 h-3.5 rounded bg-emerald-600" />
-          <span>I'm In</span>
+          <span>I&apos;m In</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-gray-500">
           <div className="w-3.5 h-3.5 rounded bg-red-50 ring-1 ring-red-200" />

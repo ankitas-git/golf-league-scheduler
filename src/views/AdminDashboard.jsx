@@ -34,7 +34,7 @@ export default function AdminDashboard({ user }) {
     });
     
     return unsubscribe;
-  }, [user]);
+  }, [user, queryClient]);
 
   const deleteMutation = useMutation({
     mutationFn: (id) => api.entities.Availability.delete(id),

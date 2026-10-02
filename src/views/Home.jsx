@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { api } from '@/api/client';
 import { createPageUrl } from '@/utils';
@@ -19,11 +21,14 @@ function ErrorText({ children }) {
   );
 }
 
-function goToCalendar() {
-  window.location.href = createPageUrl('PlayerDashboard');
+// The session cookie is set by now, so the server renders the calendar for this user.
+function useGoToCalendar() {
+  const router = useRouter();
+  return () => router.replace(createPageUrl('PlayerDashboard'));
 }
 
 function LoginForm() {
+  const goToCalendar = useGoToCalendar();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -63,6 +68,7 @@ function LoginForm() {
 
 // Step one finds the golfer on the roster by last name. Step two creates the login.
 function SignupForm() {
+  const goToCalendar = useGoToCalendar();
   const [lastName, setLastName] = useState('');
   const [matches, setMatches] = useState(null);
   const [codeRequired, setCodeRequired] = useState(false);
@@ -218,7 +224,7 @@ export default function Home({ leagueName }) {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
             <div className="text-center mb-6">
-              <img src="/oh-shield.png" alt="Oakland Hills shield" className="w-16 h-16 object-contain mx-auto mb-4" />
+              <Image src="/oh-shield.png" alt="Oakland Hills shield" width={64} height={64} priority className="w-16 h-16 object-contain mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-gray-900 mb-2">{leagueName} Scheduler</h1>
               <p className="text-gray-500">Log in to view tee times and mark your availability</p>
             </div>
