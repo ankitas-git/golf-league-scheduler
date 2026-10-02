@@ -1,7 +1,5 @@
 FROM node:22-alpine
 
-# Prisma needs openssl to pick the right query engine on alpine.
-RUN apk add --no-cache openssl
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 
 WORKDIR /app
@@ -9,6 +7,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma/
+COPY prisma.config.js ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .

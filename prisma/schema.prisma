@@ -1,12 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  // The image is alpine on arm64. Native covers local dev on the Mac.
-  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+  // Rust free client, so no engine binaries to match against alpine or arm64.
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
+// The connection string lives in prisma.config.js for the CLI and in src/server/db.js for the app.
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // Field names stay snake_case so the JSON matches what the Base44 UI already expects.
