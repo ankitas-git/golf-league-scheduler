@@ -188,7 +188,7 @@ export default function ManagerDashboard({ user }) {
       onTouchStart={ptr.onTouchStart}
       onTouchMove={ptr.onTouchMove}
       onTouchEnd={ptr.onTouchEnd}
-      className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30"
+      className="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30"
       style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}
     >
       {/* Header */}
@@ -196,7 +196,7 @@ export default function ManagerDashboard({ user }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
                 <TreePine className="h-5 w-5 text-white" />
               </div>
               <div>

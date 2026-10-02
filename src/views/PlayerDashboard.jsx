@@ -202,7 +202,7 @@ export default function PlayerDashboard({ user }) {
 
   if (!playerName) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-amber-50 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
       </div>
     );
@@ -215,7 +215,7 @@ export default function PlayerDashboard({ user }) {
       onTouchStart={ptr.onTouchStart}
       onTouchMove={ptr.onTouchMove}
       onTouchEnd={ptr.onTouchEnd}
-      className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50"
+      className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-amber-50"
       style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}
     >
       <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
@@ -307,7 +307,7 @@ export default function PlayerDashboard({ user }) {
                       <div
                         key={teeTime.id}
                         onClick={() => handleDateToggle(parseISO(teeTime.date), teeTime)}
-                        className={`bg-white rounded-xl border p-4 shadow-sm cursor-pointer transition-all hover:shadow-md ${myAvailability ? 'border-emerald-300 bg-emerald-50' : 'border-gray-100 hover:border-emerald-200'}`}
+                        className={`bg-white rounded-xl border p-4 shadow-xs cursor-pointer transition-all hover:shadow-md ${myAvailability ? 'border-emerald-300 bg-emerald-50' : 'border-gray-100 hover:border-emerald-200'}`}
                       >
                         <div className="flex items-start justify-between">
                           <div>

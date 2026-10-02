@@ -90,7 +90,7 @@ export default function AvailabilityCalendar({ selectedDates = [], onDateToggle,
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-sm">
+    <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-6 shadow-xs">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
@@ -126,7 +126,7 @@ export default function AvailabilityCalendar({ selectedDates = [], onDateToggle,
           className={cn(
             "flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium transition-all",
             viewMode === 'month' 
-              ? "bg-white text-gray-900 shadow-sm" 
+              ? "bg-white text-gray-900 shadow-xs" 
               : "text-gray-600 hover:text-gray-900"
           )}
         >
@@ -138,7 +138,7 @@ export default function AvailabilityCalendar({ selectedDates = [], onDateToggle,
           className={cn(
             "flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium transition-all",
             viewMode === 'week' 
-              ? "bg-white text-gray-900 shadow-sm" 
+              ? "bg-white text-gray-900 shadow-xs" 
               : "text-gray-600 hover:text-gray-900"
           )}
         >

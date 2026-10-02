@@ -13,7 +13,7 @@ function ErrorText({ children }) {
   if (!children) return null;
   return (
     <div role="alert" className="flex items-start gap-2 text-sm text-red-600">
-      <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+      <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
       <span>{children}</span>
     </div>
   );
@@ -214,7 +214,7 @@ export default function Home({ leagueName }) {
 
   return (
     <PageTransition>
-      <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 flex items-center justify-center p-4">
+      <main className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-amber-50 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
             <div className="text-center mb-6">
@@ -231,7 +231,7 @@ export default function Home({ leagueName }) {
                   role="tab"
                   aria-selected={mode === key}
                   onClick={() => setMode(key)}
-                  className={`py-2 text-sm font-medium rounded-md transition-colors ${mode === key ? 'bg-white shadow text-emerald-700' : 'text-gray-600 hover:text-gray-900'}`}
+                  className={`py-2 text-sm font-medium rounded-md transition-colors ${mode === key ? 'bg-white shadow-sm text-emerald-700' : 'text-gray-600 hover:text-gray-900'}`}
                 >
                   {label}
                 </button>

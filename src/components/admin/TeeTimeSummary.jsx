@@ -44,7 +44,7 @@ function TeeTimeRow({ teeTime, players, handicapMap }) {
       >
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <div className={cn(
-            "w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-sm",
+            "w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-bold text-sm",
             count === 0 ? "bg-red-100 text-red-600" :
             count < MIN_PLAYERS ? "bg-amber-100 text-amber-600" :
             "bg-emerald-100 text-emerald-700"
@@ -61,7 +61,7 @@ function TeeTimeRow({ teeTime, players, handicapMap }) {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <StatusBadge count={count} />
           {expanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
         </div>
@@ -81,12 +81,12 @@ function TeeTimeRow({ teeTime, players, handicapMap }) {
                 const hi = handicapMap?.[lastName];
                 return (
                   <div key={i} className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-gray-100 text-sm">
-                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-xs font-bold text-emerald-700 flex-shrink-0">
+                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-xs font-bold text-emerald-700 shrink-0">
                       {p.player_name?.[0]?.toUpperCase() || '?'}
                     </div>
                     <span className="text-gray-800 truncate flex-1">{p.player_name}</span>
                     {hi !== undefined && (
-                      <span className="text-xs text-gray-400 flex-shrink-0">{hi}</span>
+                      <span className="text-xs text-gray-400 shrink-0">{hi}</span>
                     )}
                   </div>
                 );

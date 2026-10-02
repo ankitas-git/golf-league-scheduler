@@ -27,7 +27,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         week: "flex w-full mt-2",
         day: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20",
         day_button: cn(buttonVariants({ variant: "ghost" }), "h-8 w-8 p-0 font-normal aria-selected:opacity-100"),
-        selected: "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground rounded-md",
+        selected: "[&>button]:bg-primary [&>button]:text-primary-foreground hover:[&>button]:bg-primary hover:[&>button]:text-primary-foreground rounded-md",
         today: "[&>button]:bg-accent [&>button]:text-accent-foreground rounded-md",
         outside: "text-muted-foreground opacity-50",
         disabled: "text-muted-foreground opacity-50",

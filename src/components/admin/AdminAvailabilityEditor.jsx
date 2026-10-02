@@ -111,7 +111,7 @@ export default function AdminAvailabilityEditor({ teeTimes, availabilities }) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+    <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs">
       <div className="flex items-center gap-2 px-5 py-3 bg-amber-50 border-b border-amber-100">
         <UserCog className="w-4 h-4 text-amber-600" />
         <span className="text-sm font-medium text-amber-800">Edit Mode — Click any cell to toggle a player's availability</span>

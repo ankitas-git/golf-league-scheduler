@@ -76,7 +76,7 @@ export default function AdminDashboard({ user }) {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
       </div>
     );
@@ -84,7 +84,7 @@ export default function AdminDashboard({ user }) {
 
   if (user.role !== 'admin') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50 flex items-center justify-center p-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,13 +109,13 @@ export default function AdminDashboard({ user }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50">
       <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-200">
+              <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-200">
                 <ShieldCheck className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -205,7 +205,7 @@ export default function AdminDashboard({ user }) {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
                 >
-                  <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+                  <div className="bg-linear-to-r from-emerald-600 to-emerald-700 px-6 py-4">
                     <div className="flex items-center justify-between">
                       <div className="text-white">
                         <p className="text-lg font-semibold">
