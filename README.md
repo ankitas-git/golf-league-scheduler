@@ -18,11 +18,11 @@ Sign up as Sajay Rai to get an admin locally. `ADMIN_PLAYERS` in `devbox.json` c
 
 ## How sign in works
 
-Golfers sign up with a username and password. They can only sign up as a name on the HI tab of the handicap sheet, and only one account per name. The roster is checked on every request, so taking someone off the sheet locks them out within about 10 minutes.
+Golfers sign up with a username and password, plus the league signup code if `SIGNUP_CODE` is set. They can only sign up as a name on the roster, one account per name. The roster is checked on every request, so removing someone locks them out right away.
+
+The roster lives in the database, not the sheet. The handicap sheet is editable by anyone with the link, so editing it never grants access by itself. On the Roster tab an admin clicks Check Sheet for Changes, reviews the adds, removals, and handicap changes, and approves the ones to apply. The check reads the sheet's public export and never writes to it.
 
 Admins are listed by roster name in `ADMIN_PLAYERS`, comma separated. Admins reset forgotten passwords from the Accounts tab.
-
-Without a Google service account the app uses the copy of the roster in `src/server/roster.js`. That is fine for local dev but goes stale, so production should have the key.
 
 ## Settings
 
@@ -37,7 +37,7 @@ All runtime, so one image works anywhere.
 | `DATABASE_URL` | Postgres connection. CNPG provides it in the cluster. |
 | `ADMIN_PLAYERS` | Roster names that get the admin dashboard. |
 | `SIGNUP_CODE` | Optional shared code golfers enter to sign up. |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Service account key. Share both sheets with its email as an editor. |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | Service account key, only needed for writing to the sheets. Share both sheets with its email as an editor. |
 | `SMTP_URL` and `MAIL_FROM` | Any SMTP relay, for pairing and availability emails. |
 
 ## Release

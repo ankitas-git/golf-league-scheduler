@@ -4,7 +4,7 @@ import { prisma } from './db';
 import { HttpError } from './http';
 import { parse } from './validation';
 import { playerKey } from './auth';
-import { isOnRoster } from './sheets';
+import { isOnRoster } from './roster';
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD');
 const text = (max) => z.string().trim().max(max).nullable().optional();

@@ -18,6 +18,7 @@ import GeneratePairings from "@/components/admin/GeneratePairings";
 import TeeTimeEditor from "@/components/admin/TeeTimeEditor";
 import SettingsPanel from "@/components/admin/SettingsPanel";
 import AccountsPanel from "@/components/admin/AccountsPanel";
+import RosterPanel from "@/components/admin/RosterPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageTransition from '@/components/PageTransition';
 import PullToRefreshIndicator from '@/components/PullToRefreshIndicator';
@@ -315,6 +316,7 @@ export default function ManagerDashboard({ user }) {
             <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="calendar">Calendar View</TabsTrigger>
             <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="table">Edit Player Availability</TabsTrigger>
             <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="teetimes">Tee Times</TabsTrigger>
+            <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="roster">Roster</TabsTrigger>
             <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="accounts">Accounts</TabsTrigger>
             <TabsTrigger className="shrink-0 px-3 py-2 sm:py-1" value="settings">Settings</TabsTrigger>
           </TabsList>
@@ -337,6 +339,10 @@ export default function ManagerDashboard({ user }) {
 
           <TabsContent value="teetimes" className="mt-6">
             <TeeTimeEditor />
+          </TabsContent>
+
+          <TabsContent value="roster" className="mt-6">
+            <RosterPanel />
           </TabsContent>
 
           <TabsContent value="accounts" className="mt-6">

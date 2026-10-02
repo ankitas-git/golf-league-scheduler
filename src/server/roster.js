@@ -1,176 +1,153 @@
 import 'server-only';
+import { prisma } from './db';
+import { HttpError } from './http';
+import { handicapSheetId } from './sheets';
 
-// Copy of the HI Jun1 tab. Only used when no Google service account is set, like local dev.
-export const GOLFER_NAMES = [
-  "William Abbatt",
-  "Chuck Adams",
-  "Kedrick Adkins",
-  "Dick Aginian",
-  "Don Bailey",
-  "John Beneicke",
-  "Paul Bernhard",
-  "Russ Bowman",
-  "Gerald Burke",
-  "Mike Buscarino",
-  "John Carter",
-  "Ray Chateau",
-  "Chang Choi",
-  "Jack Christian",
-  "Richard Constantini",
-  "Bob Cubbin",
-  "Mark Davis",
-  "Jerry Dietz_Sr",
-  "Sandro DiNello",
-  "Walt Douglas",
-  "Dick Doyle",
-  "Bob Egan",
-  "Art Emerson",
-  "Vince Fazio",
-  "Bud Feely",
-  "Marv Fudalla(ShadowWood)",
-  "Bruce Garretson",
-  "Larry Gladchun",
-  "Greg Graves",
-  "Nick Guerra",
-  "Jerry Hansen",
-  "Eric Hanson",
-  "Charlie Hrdlicka",
-  "Frank Iannuzzi",
-  "Dick Johnson",
-  "Steve Johnston",
-  "Ed Jonna",
-  "KC Joseph",
-  "Johnny Karmo",
-  "Gerd Keuffel",
-  "Chris Klee",
-  "Mike Kus",
-  "John Lilly",
-  "Dan Logan",
-  "Bruce McConnell",
-  "Doug McCuiston",
-  "Creagh Milford",
-  "Keith Milliken",
-  "Mike Monahan",
-  "John Nori(CCNaples)",
-  "Bruce Nyberg",
-  "Terry Page",
-  "Ron Palmer",
-  "Kirid Patel",
-  "David Peash",
-  "Richard Penington",
-  "David Plumley",
-  "Bob Pollock",
-  "Sajay Rai",
-  "Ravi Ravikrishnan",
-  "Bill Risk",
-  "Phillip Robinson",
-  "Robert Rozycki",
-  "Jack Ryan",
-  "Hank Sabbagh",
-  "John Santilli",
-  "Doug Schroeder",
-  "Mark Schulz",
-  "Mukesh Shah",
-  "Frank Sheckell",
-  "Jerry Sheppard",
-  "Mohsen Sohi",
-  "James Stewart",
-  "Keith Stipp",
-  "Paul Tobias",
-  "Dan Tomlinson",
-  "Jeff Trimmer",
-  "Pete Vetowich",
-  "Marty Welch",
-  "Stephen Whitener",
-  "Rob Whitty",
-  "Denton Wolf",
-  "Walt Ebling",
-  "Steve Ernst",
-  "Walt Oehrlein",
-];
+// The roster lives in the database. The handicap sheet is world editable, so it is only
+// ever a source for an import that an admin reviews and approves.
 
-// GHIN H.I. keyed by lowercase last name, the format the dashboard expects.
-export const HANDICAPS = {
-  "abbatt": 21.8,
-  "adams": 22.4,
-  "adkins": 12.6,
-  "aginian": 20.8,
-  "bailey": 33.9,
-  "beneicke": 30.8,
-  "bernhard": 16.8,
-  "bowman": 9.5,
-  "burke": 18.9,
-  "buscarino": 12.7,
-  "carter": 16.2,
-  "chateau": 32.2,
-  "choi": 34.9,
-  "christian": 16.6,
-  "constantini": 10.8,
-  "cubbin": 13,
-  "davis": 9.7,
-  "dietz_sr": 18.1,
-  "dinello": 15.5,
-  "douglas": 14.7,
-  "doyle": 31.8,
-  "egan": 17.7,
-  "emerson": 27.7,
-  "fazio": 23.7,
-  "feely": 26.6,
-  "fudalla(shadowwood)": 23.9,
-  "garretson": 8.5,
-  "gladchun": 19.1,
-  "graves": 34.5,
-  "guerra": 15.9,
-  "hansen": 14.3,
-  "hanson": 31,
-  "hrdlicka": 23.5,
-  "iannuzzi": 15.4,
-  "johnson": 14.2,
-  "johnston": 17.4,
-  "jonna": 30.4,
-  "joseph": 27.3,
-  "karmo": 14.3,
-  "keuffel": 37.1,
-  "klee": 11.8,
-  "kus": 22.6,
-  "lilly": 35.5,
-  "logan": 10.4,
-  "mcconnell": 21.9,
-  "mccuiston": 17.6,
-  "milford": 26.2,
-  "milliken": 11.9,
-  "monahan": 31.4,
-  "nori(ccnaples)": 28.7,
-  "nyberg": 17.3,
-  "page": 26.9,
-  "palmer": 13,
-  "patel": 23.4,
-  "peash": 19.4,
-  "penington": 29.1,
-  "plumley": 18.5,
-  "pollock": 12.8,
-  "rai": 17.5,
-  "ravikrishnan": 26.8,
-  "risk": 24.2,
-  "robinson": 20.4,
-  "rozycki": 35.6,
-  "ryan": 16.8,
-  "sabbagh": 39.9,
-  "santilli": 11.5,
-  "schroeder": 17.6,
-  "schulz": 28,
-  "shah": 19.1,
-  "sheckell": 9.6,
-  "sheppard": 29.6,
-  "sohi": 13.8,
-  "stewart": 16.3,
-  "stipp": 21.5,
-  "tobias": 20.8,
-  "tomlinson": 34.6,
-  "trimmer": 30.7,
-  "vetowich": 21.4,
-  "welch": 38.1,
-  "whitener": 21.1,
-  "whitty": 10.5,
-  "wolf": 34.4,
-};
+export const nameKey = (name) => String(name || '').replace(/\s+/g, ' ').trim().toLowerCase();
+export const fullName = (p) => `${p.first_name} ${p.last_name}`;
+const lastKey = (p) => p.last_name.replace(/\(.*\)/, '').trim().toLowerCase();
+
+export async function isOnRoster(playerName) {
+  const key = nameKey(playerName);
+  if (!key) return false;
+  return Boolean(await prisma.rosterPlayer.findUnique({ where: { name_key: key }, select: { id: true } }));
+}
+
+// The spelling stored on the roster, so accounts match it exactly.
+export async function rosterName(playerName) {
+  const p = await prisma.rosterPlayer.findUnique({ where: { name_key: nameKey(playerName) } });
+  return p ? fullName(p) : null;
+}
+
+const byLast = (a, b) => a.last_name.localeCompare(b.last_name) || a.first_name.localeCompare(b.first_name);
+
+export async function listRoster() {
+  return (await prisma.rosterPlayer.findMany()).sort(byLast);
+}
+
+export async function sortedRosterNames() {
+  return (await listRoster()).map(fullName);
+}
+
+export async function matchesForLastName(last) {
+  const key = last.trim().toLowerCase();
+  return (await listRoster()).filter((p) => lastKey(p) === key).map(fullName);
+}
+
+// GHIN H.I. keyed by lowercase last name, the shape the dashboard already reads.
+export async function handicapMap() {
+  const map = {};
+  for (const p of await listRoster()) if (p.hi_index !== null) map[lastKey(p)] = p.hi_index;
+  return map;
+}
+
+// Minimal CSV parser. The gviz export quotes every field and doubles embedded quotes.
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else if (c !== '\r') field += c;
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+// Reads the public CSV export, so no Google credentials are needed just to see the roster.
+async function fetchSheetRoster() {
+  const id = await handicapSheetId();
+  let res;
+  try {
+    res = await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&headers=1`, {
+      signal: AbortSignal.timeout(15000),
+      redirect: 'error',
+    });
+  } catch {
+    throw new HttpError(502, 'Could not reach the handicap sheet. Check that anyone with the link can view it.');
+  }
+  if (!res.ok) throw new HttpError(502, `The handicap sheet answered ${res.status}. Check that anyone with the link can view it.`);
+  const rows = parseCsv(await res.text());
+  const header = rows[0] || [];
+  const col = (re) => header.findIndex((h) => re.test(h.replace(/\s+/g, ' ').trim()));
+  const fi = col(/^first name$/i);
+  const li = col(/^last name$/i);
+  const hi = col(/^ghin .*h\.i\.?$/i);
+  if (fi < 0 || li < 0) throw new HttpError(422, 'The first tab of the handicap sheet has no First Name and Last Name columns.');
+
+  const players = new Map();
+  for (const r of rows.slice(1)) {
+    const first = (r[fi] || '').trim();
+    const last = (r[li] || '').trim();
+    // Notes and formulas sit in the name columns below the table, so skip anything long or odd.
+    if (!first || !last || first.length > 40 || last.length > 40 || /[=*/]/.test(first + last)) continue;
+    const idx = hi >= 0 ? Number.parseFloat(r[hi]) : Number.NaN;
+    const p = { first_name: first, last_name: last, name_key: nameKey(`${first} ${last}`), hi_index: Number.isFinite(idx) ? idx : null };
+    players.set(p.name_key, p);
+  }
+  if (players.size === 0) throw new HttpError(422, 'The handicap sheet has no golfers on its first tab.');
+  return players;
+}
+
+// What an import would change. Nothing is written until an admin approves specific rows.
+export async function previewImport() {
+  const sheet = await fetchSheetRoster();
+  const current = new Map((await listRoster()).map((p) => [p.name_key, p]));
+  const accounts = new Set((await prisma.user.findMany({ select: { player_name: true } })).map((u) => nameKey(u.player_name)));
+
+  const add = [...sheet.values()].filter((p) => !current.has(p.name_key)).sort(byLast);
+  const remove = [...current.values()].filter((p) => !sheet.has(p.name_key)).sort(byLast)
+    .map((p) => ({ ...p, has_account: accounts.has(p.name_key) }));
+  const handicaps = [...sheet.values()]
+    .filter((p) => current.has(p.name_key) && current.get(p.name_key).hi_index !== p.hi_index)
+    .sort(byLast)
+    .map((p) => ({ ...p, old_hi_index: current.get(p.name_key).hi_index }));
+  return { sheet_count: sheet.size, roster_count: current.size, add, remove, handicaps };
+}
+
+// Re-reads the sheet rather than trusting the browser, then applies only the approved keys.
+export async function applyImport({ add = [], remove = [], updateHandicaps = false }, actor) {
+  const preview = await previewImport();
+  const addKeys = new Set(add);
+  const removeKeys = new Set(remove);
+  if (removeKeys.has(nameKey(actor.player_name))) throw new HttpError(400, 'You cannot remove yourself from the roster.');
+
+  const toAdd = preview.add.filter((p) => addKeys.has(p.name_key));
+  const toRemove = preview.remove.filter((p) => removeKeys.has(p.name_key));
+  const toUpdate = updateHandicaps ? preview.handicaps : [];
+
+  await prisma.$transaction([
+    ...toAdd.map(({ first_name, last_name, name_key, hi_index }) =>
+      prisma.rosterPlayer.create({ data: { first_name, last_name, name_key, hi_index } })),
+    prisma.rosterPlayer.deleteMany({ where: { name_key: { in: toRemove.map((p) => p.name_key) } } }),
+    ...toUpdate.map((p) => prisma.rosterPlayer.update({ where: { name_key: p.name_key }, data: { hi_index: p.hi_index } })),
+  ]);
+  return { added: toAdd.length, removed: toRemove.length, handicaps_updated: toUpdate.length };
+}
+
+export async function addPlayer({ first_name, last_name }) {
+  const key = nameKey(`${first_name} ${last_name}`);
+  if (await prisma.rosterPlayer.findUnique({ where: { name_key: key } })) {
+    throw new HttpError(409, `${first_name} ${last_name} is already on the roster`);
+  }
+  return prisma.rosterPlayer.create({ data: { first_name, last_name, name_key: key } });
+}
+
+export async function removePlayer(id, actor) {
+  const p = await prisma.rosterPlayer.findUnique({ where: { id } });
+  if (!p) throw new HttpError(404, 'Not on the roster');
+  if (p.name_key === nameKey(actor.player_name)) throw new HttpError(400, 'You cannot remove yourself from the roster.');
+  await prisma.rosterPlayer.delete({ where: { id } });
+  return p;
+}

@@ -70,7 +70,7 @@ export default function AccountsPanel() {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-slate-500 mb-4">
-          Golfers sign up themselves. Only names on the handicap sheet can sign up or log in. Admins are set in the deployment config.
+          Golfers sign up themselves. Only names on the Roster tab can sign up or log in. Admins are set in the deployment config.
         </p>
         {isLoading ? (
           <Loader2 className="w-5 h-5 animate-spin text-emerald-600" />

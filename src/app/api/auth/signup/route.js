@@ -6,7 +6,7 @@ import { handle, readJson, assertSameOrigin, clientIp, HttpError } from '@/serve
 import { rateLimit } from '@/server/ratelimit';
 import { parse, username, password, optionalEmail } from '@/server/validation';
 import { hashPassword, createSession, setSessionCookie, publicUser } from '@/server/auth';
-import { loadRoster } from '@/server/sheets';
+import { rosterName } from '@/server/roster';
 
 const Body = z.object({
   player_name: z.string().trim().min(1).max(100),
@@ -31,9 +31,8 @@ export const POST = handle(async (req) => {
   const code = process.env.SIGNUP_CODE;
   if (code && !codeMatches(body.signup_code, code)) throw new HttpError(403, 'That league signup code is not right');
 
-  // Use the spelling from the sheet, not whatever casing was typed.
-  const target = body.player_name.replace(/\s+/g, ' ').toLowerCase();
-  const playerName = (await loadRoster()).find((n) => n.replace(/\s+/g, ' ').toLowerCase() === target);
+  // Use the roster's spelling, not whatever casing was typed.
+  const playerName = await rosterName(body.player_name);
   if (!playerName) throw new HttpError(403, 'That name is not on the league roster');
 
   if (await prisma.user.findUnique({ where: { player_name: playerName } })) {

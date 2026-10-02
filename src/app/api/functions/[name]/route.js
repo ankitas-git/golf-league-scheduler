@@ -1,9 +1,9 @@
 import { handle, json, readJson, assertSameOrigin, HttpError } from '@/server/http';
 import { requireAdmin } from '@/server/auth';
 import { serverClient } from '@/server/compat';
-import { sortedRoster, sheetsConfigured } from '@/server/sheets';
+import { sheetsConfigured } from '@/server/sheets';
+import { sortedRosterNames, handicapMap } from '@/server/roster';
 import { emailConfigured } from '@/server/email';
-import { HANDICAPS } from '@/server/roster';
 import autoSyncAvailability from '@/server/functions/autoSyncAvailability';
 import generatePairings from '@/server/functions/generatePairings';
 import populatePairingsSheet from '@/server/functions/populatePairingsSheet';
@@ -12,10 +12,10 @@ import emailPairings from '@/server/functions/emailPairings';
 // Every function here is an admin tool. Player sheet updates happen server side on save.
 const FUNCTIONS = {
   getGolferNames: async () => {
-    const golferNames = await sortedRoster();
+    const golferNames = await sortedRosterNames();
     return Response.json({ success: true, golferNames, count: golferNames.length });
   },
-  getHandicaps: async () => Response.json({ success: true, handicapMap: HANDICAPS }),
+  getHandicaps: async () => Response.json({ success: true, handicapMap: await handicapMap() }),
   autoSyncAvailability,
   generatePairings,
   populatePairingsSheet,

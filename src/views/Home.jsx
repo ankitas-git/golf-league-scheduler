@@ -205,7 +205,7 @@ function SignupForm() {
     <form onSubmit={lookUp} className="space-y-4">
       <div className="space-y-1">
         <Label htmlFor="signup-last">Your last name</Label>
-        <Input id="signup-last" placeholder="As it appears on the handicap sheet" value={lastName} onChange={(e) => { setLastName(e.target.value); setError(''); }} className="h-12 text-lg" autoFocus required />
+        <Input id="signup-last" placeholder="As it appears on the league roster" value={lastName} onChange={(e) => { setLastName(e.target.value); setError(''); }} className="h-12 text-lg" autoFocus required />
       </div>
       <ErrorText>{error}</ErrorText>
       <Button type="submit" disabled={busy || !lastName.trim()} className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-lg font-medium">

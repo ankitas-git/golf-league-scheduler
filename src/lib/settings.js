@@ -12,7 +12,7 @@ export const SETTINGS = [
   { key: 'player_fee_text', label: 'Fee captains collect', type: 'text', default: '$15  ($10 for game & $5 for 1st Tee)' },
   { key: 'cancel_phone', label: '1st Tee phone for cancellations', type: 'text', default: '(248)433-0674' },
   { key: 'local_rule_text', label: 'Local rule line', type: 'text', default: 'YR Local Rule: lift & place in the rough is allowed' },
-  { key: 'handicap_sheet_url', label: 'Handicap sheet link', type: 'url', default: '', adminOnly: true, help: 'The Google Sheet with the HI tab. Also the login roster.' },
+  { key: 'handicap_sheet_url', label: 'Handicap sheet link', type: 'url', default: '', adminOnly: true, help: 'The Google Sheet with the HI tab. The Roster tab imports from it.' },
   { key: 'pairings_sheet_url', label: 'Pairings sheet link', type: 'url', default: '', adminOnly: true },
 ];
 

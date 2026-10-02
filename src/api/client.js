@@ -81,6 +81,11 @@ export const api = {
     accounts: () => request('GET', '/api/admin/accounts'),
     resetPassword: (id, new_password) => request('PATCH', `/api/admin/accounts/${encodeURIComponent(id)}`, { new_password }),
     deleteAccount: (id) => request('DELETE', `/api/admin/accounts/${encodeURIComponent(id)}`),
+    roster: () => request('GET', '/api/admin/roster'),
+    addToRoster: (first_name, last_name) => request('POST', '/api/admin/roster', { first_name, last_name }),
+    removeFromRoster: (id) => request('DELETE', `/api/admin/roster/${encodeURIComponent(id)}`),
+    previewRosterImport: () => request('GET', '/api/admin/roster/import'),
+    applyRosterImport: (changes) => request('POST', '/api/admin/roster/import', changes),
   },
   // Returns { data } like the axios based SDK did.
   functions: {

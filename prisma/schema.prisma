@@ -40,6 +40,22 @@ model Session {
   @@map("sessions")
 }
 
+// Who may sign up and log in. Admins keep it in sync with the HI tab by reviewing an import.
+// The sheet is world editable, so editing it alone never grants access.
+model RosterPlayer {
+  id           String   @id @default(uuid())
+  first_name   String
+  last_name    String
+  // Lowercase "first last" with single spaces, for matching account names.
+  name_key     String   @unique
+  // GHIN H.I. from the last import. Null for golfers without one.
+  hi_index     Float?
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
+
+  @@map("roster")
+}
+
 model Availability {
   id           String   @id @default(uuid())
   date         String

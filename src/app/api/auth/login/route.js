@@ -5,7 +5,7 @@ import { handle, readJson, assertSameOrigin, clientIp, HttpError } from '@/serve
 import { rateLimit } from '@/server/ratelimit';
 import { parse } from '@/server/validation';
 import { verifyPassword, burnPasswordCheck, createSession, setSessionCookie, publicUser } from '@/server/auth';
-import { isOnRoster } from '@/server/sheets';
+import { isOnRoster } from '@/server/roster';
 
 const Body = z.object({
   username: z.string().trim().toLowerCase().min(1).max(32),

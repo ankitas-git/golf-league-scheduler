@@ -3,7 +3,7 @@ import { randomBytes, scrypt as scryptCb, timingSafeEqual, createHash } from 'no
 import { promisify } from 'node:util';
 import { prisma } from './db';
 import { HttpError } from './http';
-import { isOnRoster } from './sheets';
+import { isOnRoster } from './roster';
 
 const scrypt = promisify(scryptCb);
 
