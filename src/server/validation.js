@@ -15,7 +15,7 @@ export const password = z
   .min(8, 'Password must be at least 8 characters')
   .max(128, 'Password must be at most 128 characters');
 
-export const email = z.string().trim().toLowerCase().email('Enter a valid email').max(254);
+export const email = z.string().trim().toLowerCase().pipe(z.email('Enter a valid email').max(254));
 
 // Accepts an empty string as "clear it", which is what the forms send.
 export const optionalEmail = z.union([z.literal(''), email, z.null()]).optional().transform((v) => (v ? v : null));

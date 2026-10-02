@@ -43,7 +43,7 @@ export default function DateFilter({ startDate, endDate, onStartDateChange, onEn
                 onStartDateChange(d);
                 setStartOpen(false);
               }}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>
@@ -72,7 +72,7 @@ export default function DateFilter({ startDate, endDate, onStartDateChange, onEn
                 setEndOpen(false);
               }}
               disabled={(date) => startDate && date < startDate}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>

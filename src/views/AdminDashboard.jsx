@@ -5,7 +5,7 @@ import { api } from '@/api/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format, parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 import { Calendar, Users, Loader2, ShieldCheck, AlertTriangle } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import DateFilter from '@/components/admin/DateFilter';
 import ExportButton from '@/components/admin/ExportButton';
 import AvailabilityCard from '@/components/availability/AvailabilityCard';

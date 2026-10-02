@@ -31,7 +31,7 @@ export default function DateFilter({ startDate, endDate, onStartChange, onEndCha
               mode="single"
               selected={startDate}
               onSelect={onStartChange}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>
@@ -58,7 +58,7 @@ export default function DateFilter({ startDate, endDate, onStartChange, onEndCha
               selected={endDate}
               onSelect={onEndChange}
               disabled={(date) => startDate && date < startDate}
-              initialFocus
+              autoFocus
             />
           </PopoverContent>
         </Popover>

@@ -4,7 +4,7 @@ import React from 'react';
 import { format, parseISO } from "date-fns";
 import { Calendar, Clock, Trash2, User, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function AvailabilityCard({ availability, onDelete, showPlayer = false, canDelete = true }) {
   const formatTime = (time) => {
