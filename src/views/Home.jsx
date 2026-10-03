@@ -66,14 +66,14 @@ function LoginForm() {
   );
 }
 
-// Step one finds the golfer on the roster by last name. Step two creates the login.
-function SignupForm() {
+// Step one checks the league code and finds the golfer by last name. Step two creates the login.
+function SignupForm({ codeRequired }) {
   const goToCalendar = useGoToCalendar();
   const [lastName, setLastName] = useState('');
   const [matches, setMatches] = useState(null);
-  const [codeRequired, setCodeRequired] = useState(false);
+  const [code, setCode] = useState('');
   const [player, setPlayer] = useState(null);
-  const [form, setForm] = useState({ username: '', password: '', confirm: '', email: '', signup_code: '' });
+  const [form, setForm] = useState({ username: '', password: '', confirm: '', email: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -87,8 +87,7 @@ function SignupForm() {
     }
     setBusy(true);
     try {
-      const res = await api.auth.rosterMatches(lastName.trim());
-      setCodeRequired(res.signup_code_required);
+      const res = await api.auth.rosterMatches(lastName.trim(), code.trim() || undefined);
       if (res.matches.length === 0) {
         setError('That last name is not on the league roster. Please contact a league admin.');
       } else if (res.matches.length === 1) {
@@ -127,7 +126,7 @@ function SignupForm() {
         username: form.username,
         password: form.password,
         email: form.email,
-        signup_code: form.signup_code || undefined,
+        signup_code: code.trim() || undefined,
       });
       goToCalendar();
     } catch (err) {
@@ -160,13 +159,6 @@ function SignupForm() {
           <Input id="signup-email" type="email" autoComplete="email" value={form.email} onChange={set('email')} aria-describedby="signup-email-help" />
           <p id="signup-email-help" className="text-xs text-gray-500">Only used to send you pairings.</p>
         </div>
-        {codeRequired && (
-          <div className="space-y-1">
-            <Label htmlFor="signup-code">League signup code</Label>
-            <Input id="signup-code" autoComplete="off" value={form.signup_code} onChange={set('signup_code')} required aria-describedby="signup-code-help" />
-            <p id="signup-code-help" className="text-xs text-gray-500">Ask a league admin if you do not have it.</p>
-          </div>
-        )}
         <ErrorText>{error}</ErrorText>
         <Button type="submit" disabled={busy} className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-lg font-medium">
           {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create Account'}
@@ -203,19 +195,26 @@ function SignupForm() {
 
   return (
     <form onSubmit={lookUp} className="space-y-4">
+      {codeRequired && (
+        <div className="space-y-1">
+          <Label htmlFor="signup-code">League signup code</Label>
+          <Input id="signup-code" autoComplete="off" autoCapitalize="none" value={code} onChange={(e) => { setCode(e.target.value); setError(''); }} className="h-12 text-lg" autoFocus required aria-describedby="signup-code-help" />
+          <p id="signup-code-help" className="text-xs text-gray-500">Ask a league admin if you do not have it.</p>
+        </div>
+      )}
       <div className="space-y-1">
         <Label htmlFor="signup-last">Your last name</Label>
-        <Input id="signup-last" placeholder="As it appears on the league roster" value={lastName} onChange={(e) => { setLastName(e.target.value); setError(''); }} className="h-12 text-lg" autoFocus required />
+        <Input id="signup-last" placeholder="As it appears on the league roster" value={lastName} onChange={(e) => { setLastName(e.target.value); setError(''); }} className="h-12 text-lg" autoFocus={!codeRequired} required />
       </div>
       <ErrorText>{error}</ErrorText>
-      <Button type="submit" disabled={busy || !lastName.trim()} className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-lg font-medium">
+      <Button type="submit" disabled={busy || !lastName.trim() || (codeRequired && !code.trim())} className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-lg font-medium">
         {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Continue <ArrowRight className="w-5 h-5 ml-2" /></>}
       </Button>
     </form>
   );
 }
 
-export default function Home({ leagueName }) {
+export default function Home({ leagueName, codeRequired }) {
   const [mode, setMode] = useState('login');
 
   return (
@@ -244,7 +243,7 @@ export default function Home({ leagueName }) {
               ))}
             </div>
 
-            {mode === 'login' ? <LoginForm /> : <SignupForm />}
+            {mode === 'login' ? <LoginForm /> : <SignupForm codeRequired={codeRequired} />}
           </div>
 
           <p className="text-center text-sm text-gray-400 mt-6">Only golfers on the league roster can sign in</p>

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { timingSafeEqual, createHash } from 'node:crypto';
 import { z } from 'zod';
 import { prisma } from '@/server/db';
 import { handle, readJson, assertSameOrigin, clientIp, HttpError } from '@/server/http';
@@ -7,6 +6,7 @@ import { rateLimit } from '@/server/ratelimit';
 import { parse, username, password, optionalEmail } from '@/server/validation';
 import { hashPassword, createSession, setSessionCookie, publicUser } from '@/server/auth';
 import { rosterName } from '@/server/roster';
+import { assertSignupCode } from '@/server/signupCode';
 
 const Body = z.object({
   player_name: z.string().trim().min(1).max(100),
@@ -16,20 +16,13 @@ const Body = z.object({
   signup_code: z.string().max(200).optional(),
 });
 
-// Hashing first makes the comparison constant time whatever the input length.
-function codeMatches(given, expected) {
-  const h = (s) => createHash('sha256').update(s).digest();
-  return timingSafeEqual(h(given || ''), h(expected));
-}
-
 export const POST = handle(async (req) => {
   assertSameOrigin(req);
   rateLimit(`signup-ip:${clientIp(req)}`, 60, 60 * 60 * 1000);
   const body = parse(Body, await readJson(req));
 
-  // Optional shared league code. Stops someone outside the league from claiming a golfer's name.
-  const code = process.env.SIGNUP_CODE;
-  if (code && !codeMatches(body.signup_code, code)) throw new HttpError(403, 'That league signup code is not right');
+  // Checked again here, so the lookup step cannot be skipped.
+  assertSignupCode(body.signup_code);
 
   // Use the roster's spelling, not whatever casing was typed.
   const playerName = await rosterName(body.player_name);
