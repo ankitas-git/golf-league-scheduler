@@ -66,6 +66,7 @@ export default function PlayerDashboard({ user }) {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['my-availabilities'] });
+      queryClient.invalidateQueries({ queryKey: ['all-availabilities'] });
       toast.success('Availability added');
     },
   });
@@ -166,6 +167,7 @@ export default function PlayerDashboard({ user }) {
     },
     onSuccess: ({ availability }) => {
       queryClient.invalidateQueries({ queryKey: ['my-availabilities'] });
+      queryClient.invalidateQueries({ queryKey: ['all-availabilities'] });
       toast.success('Availability removed');
     },
   });
@@ -190,13 +192,6 @@ export default function PlayerDashboard({ user }) {
     const monthEnd = format(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0), 'yyyy-MM-dd');
     displayedTeeTimes = displayedTeeTimes.filter(t => t.date >= monthStart && t.date <= monthEnd);
   }
-  
-  // Get availabilities for each tee time date
-  const availabilitiesByDate = allAvailabilities.reduce((acc, a) => {
-    if (!acc[a.date]) acc[a.date] = [];
-    acc[a.date].push(a);
-    return acc;
-  }, {});
   
   const isLoading = isLoadingMine || isLoadingAll;
 
@@ -301,8 +296,8 @@ export default function PlayerDashboard({ user }) {
               ) : (
                 <div className="space-y-3">
                   {displayedTeeTimes.map((teeTime) => {
-                    const dateAvailabilities = availabilitiesByDate[teeTime.date] || [];
-                    const myAvailability = dateAvailabilities.find(a => a.player_email === playerEmail);
+                    // Same source as the calendar, so tapping either one turns both green right away.
+                    const myAvailability = myAvailabilities.find(a => (a.date || '').split('T')[0] === teeTime.date);
                     return (
                       <div
                         key={teeTime.id}
