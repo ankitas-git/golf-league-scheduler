@@ -1,6 +1,6 @@
 # Golf League Scheduler
 
-A full-stack web app that runs the day-to-day operations of a golf league: tee times, player availability, pairings, and roster management. I designed and built it from the ground up to replace the league's original no-code app (built on Base44) with a faster, more secure, fully custom application.
+A full-stack web app that runs the day-to-day operations of a golf league: tee times, player availability, pairings, and roster management. 
 
 ## Highlights
 
