@@ -12,7 +12,7 @@
     "PGPORT": "5433",
     "PGUSER": "golf",
     "PGDATABASE": "golf_scheduler",
-    "ADMIN_PLAYERS": "Sajay Rai",
+    "ADMIN_PLAYERS": "Jane Doe",
     "NEXT_TELEMETRY_DISABLED": "1"
   },
   "shell": {
