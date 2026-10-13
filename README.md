@@ -4,7 +4,7 @@ A full-stack web app that runs the day-to-day operations of a golf league: tee t
 
 ## Highlights
 
-- **Rebuilt from a no-code platform into a production Next.js app.** I migrated the league off Base44 to a custom stack I own end to end, with a real database, authentication, and deployment pipeline.
+- **Rebuilt from a no-code platform into a production Next.js app.** Migrated the league off Base44 to a custom stack, with a real database, authentication, and deployment pipeline.
 - **Roster-based authentication.** Golfers can only register under a name on the league roster, one account per name. Access is checked on every request, so removing a player revokes access immediately.
 - **Safe Google Sheets sync with admin review.** The league tracks handicaps in a shared spreadsheet. Instead of trusting the sheet blindly, the app detects adds, removals, and handicap changes, and an admin approves each change before it's applied. Editing the sheet never grants anyone access.
 - **Admin dashboard.** Admins manage the roster, reset passwords, and configure league settings (tee intervals, scramble team rules, courses, commissioners) without touching code.
