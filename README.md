@@ -1,8 +1,6 @@
 # golf-scheduler
 
-Tee times, availability, and pairings for the Young Retiree League. It replaced the Base44 app. Next.js with Prisma on Postgres.
-
-It runs on the SYLLC cluster at https://golf.syllc.net. The manifests live in the platform repo under `k8s-core/golf-scheduler`.
+Tee times, availability, and pairings for the Young Retiree League. Next.js app with Prisma on Postgres.
 
 ## Local dev
 
