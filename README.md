@@ -12,8 +12,6 @@ devbox run setup    # installs deps, starts Postgres on 5433, applies migrations
 devbox run dev      # http://localhost:3000
 ```
 
-Sign up as Sajay Rai to get an admin locally. `ADMIN_PLAYERS` in `devbox.json` controls that.
-
 ## How sign in works
 
 Golfers sign up with a username and password, plus the league signup code if `SIGNUP_CODE` is set. They can only sign up as a name on the roster, one account per name. The roster is checked on every request, so removing someone locks them out right away.
