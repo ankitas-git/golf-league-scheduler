@@ -22,10 +22,6 @@ A full-stack web app that runs the day-to-day operations of a golf league: tee t
 | Infrastructure | Docker, Kubernetes, Argo CD, CloudNativePG |
 | Developer tooling | devbox, direnv, ESLint, pnpm |
 
-## What I learned
-
-<!-- Write 2–4 sentences in your own words. For example: the hardest problem you solved, a design decision you're proud of, or what you'd do differently next time. Recruiters love this section. -->
-
 ## Running locally
 
 You need devbox and direnv. Everything else comes from `devbox.json`.
